@@ -1,0 +1,16 @@
+FROM node:14.20.0-alpine3.15
+
+RUN addgroup chat && adduser -S -G chat chat
+USER chat
+
+WORKDIR /app
+COPY package.json ./
+USER root
+RUN  apk add --update nodejs && npm install --pure-lockfile
+# USER chat
+COPY . .
+
+EXPOSE 8000
+
+RUN npm start
+CMD [ "npm","start" ]

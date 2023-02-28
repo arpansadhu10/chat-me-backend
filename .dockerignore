@@ -1,0 +1,15 @@
+node_modules/
+docs/
+logs/
+.env
+.eslintignore
+.eslintre.json
+.prettierignore
+.prettierrc
+Dockerfile
+docker-compose.yaml
+\_docker-compose.yml
+commitlint.config.js
+yarn.lock
+coverage/
+.github/

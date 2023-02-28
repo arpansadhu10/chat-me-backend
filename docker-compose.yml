@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 8000:8000
+    environment:
+      PORT: 8000
+      NODE_ENV: development
+      HOST: http://localhost:8000
+      DB_CONNECTION_URI: mongodb://db/chatme
+      PASSPORT_JWT_SECRET: secret
+      PASSPORT_JWT_ISSUER: http://localhost:8000
+      PASSPORT_JWT_REFRESH_SECRET: secret
+
+  db:
+    image: mongo:5.0.9
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - chatme:/data/db
+
+volumes:
+  chatme:
