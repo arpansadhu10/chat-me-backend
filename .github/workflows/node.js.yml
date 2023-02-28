@@ -10,8 +10,11 @@ on:
     branches: [ "dev" ]
 
 jobs:
-  build:
-
+  test:
+    env:
+      PORT: ${{ secrets.PORT }}
+      MONGO_URI: ${{ secrets.MONGO_URI }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
     runs-on: self-hosted
 
     strategy:
