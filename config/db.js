@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 require('dotenv').config()
 
-const database_url = process.env.MONGO_URI;
+const database_url = "mongodb://127.0.0.1:27017/chatApp";
 exports.connect = () => {
-  console.log(database_url);
+//   console.log(database_url);
   mongoose.connect(String(database_url), {
     useNewUrlPArser: true,
     useUnifiedTopology: true
