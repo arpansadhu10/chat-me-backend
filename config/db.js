@@ -3,7 +3,8 @@ require('dotenv').config()
 
 const database_url = process.env.MONGO_URI;
 exports.connect = () => {
-  mongoose.connect(database_url, {
+  console.log(database_url);
+  mongoose.connect(String(database_url), {
     useNewUrlPArser: true,
     useUnifiedTopology: true
   }).then(() => {
