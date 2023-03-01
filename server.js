@@ -9,7 +9,7 @@ const cors = require("cors");
 const app = express();
 
 dotenv.config();
-connectDB();
+connectDB.connect()
 app.use(express.json());
 app.use(
   cors({
