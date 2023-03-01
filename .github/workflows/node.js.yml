@@ -11,10 +11,7 @@ on:
 
 jobs:
   test:
-    env:
-      PORT: ${{ env.PORT }}
-      MONGO_URI: ${{ env.MONGO_URI }}
-      JWT_SECRET: ${{ env.JWT_SECRET }}
+    environment: chat-app-backend
     runs-on: self-hosted
 
     strategy:
