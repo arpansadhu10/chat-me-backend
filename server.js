@@ -9,7 +9,7 @@ const cors = require("cors");
 const app = express();
 
 dotenv.config();
-connectDB();
+// connectDB();
 app.use(express.json());
 app.use(
   cors({
@@ -17,7 +17,8 @@ app.use(
   })
 );
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
+console.log(process.env.PORT)
 const server = app.listen(PORT, () => {
   console.log(`Server running on port:${PORT}`);
 });
