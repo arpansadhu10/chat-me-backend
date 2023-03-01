@@ -12,9 +12,9 @@ on:
 jobs:
   test:
     env:
-      PORT: ${{ secrets.PORT }}
-      MONGO_URI: ${{ secrets.MONGO_URI }}
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      PORT: ${{ env.PORT }}
+      MONGO_URI: ${{ env.MONGO_URI }}
+      JWT_SECRET: ${{ env.JWT_SECRET }}
     runs-on: self-hosted
 
     strategy:
