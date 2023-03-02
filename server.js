@@ -60,6 +60,7 @@ io.on("connection", (socket) => {
   socket.on("stop typing", (room) => {
     socket.in(room).emit("stop typing");
   });
+
   socket.on("read", (data) => {
     const { room, users } = data;
     socket.in(room).emit("read by", { room, users });
