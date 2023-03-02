@@ -13,11 +13,11 @@ connectDB.connect()
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://web-chatme.netlify.app"],
+    origin: ["http://localhost:3000", "https://web-chatme.netlify.app", "https://chatme.streamify.co.in"],
   })
 );
 
-const PORT = process.env.PORT||8000;
+const PORT = process.env.PORT || 8000;
 console.log(PORT)
 const server = app.listen(PORT, () => {
   console.log(`Server running on port:${PORT}`);
@@ -25,7 +25,7 @@ const server = app.listen(PORT, () => {
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: ["http://localhost:3000", "https://web-chatme.netlify.app"],
+    origin: ["http://localhost:3000", "https://web-chatme.netlify.app", "https://chatme.streamify.co.in/"],
   },
 });
 

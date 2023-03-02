@@ -27,6 +27,12 @@ userSchema.pre("save", async function (next) {
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });
+
+userSchema.method('toJSON', function toJSON() {
+  const user = this.toObject();
+  delete user.password;
+  return user;
+});
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
