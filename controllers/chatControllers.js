@@ -1,6 +1,11 @@
-const asyncHandler = require("express-async-handler");
-const Chat = require("../models/chat-model");
-const User = require("../models/user-model");
+import asyncHandler from 'express-async-handler';
+// const Chat = require("../models/chat-model");
+import Chat from '../models/chat-model.js';
+// const Message = require("../models/message-model");
+import Message from '../models/message-model.js';
+// const User = require("../models/user-model");
+import User from '../models/user-model.js';
+import APIError from '../utils/APIError.js';
 
 //POST - /api/chat - {userId}
 const accessChat = asyncHandler(async (req, res) => {
@@ -56,13 +61,16 @@ const fetchChats = asyncHandler(async (req, res) => {
       .populate("readBy", "-password")
       .populate("latestMessage")
       .sort({ updatedAt: -1 });
+    // console.log(chats, "chats");
+    if (chats) {
+      chats = await User.populate(chats, {
+        path: "latestMessage.sender",
+        select: "name email pic",
+      });
 
-    chats = await User.populate(chats, {
-      path: "latestMessage.sender",
-      select: "name email pic",
-    });
-
-    res.status(200).send(chats);
+      res.status(200).send(chats);
+    }
+    throw new APIError("Not found", 404);
   } catch (err) {
     res.status(401);
     throw new Error(err.message);
@@ -202,7 +210,7 @@ const readBy = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = {
+export {
   accessChat,
   fetchChats,
   createGroupChat,

@@ -1,8 +1,14 @@
-const asyncHandler = require("express-async-handler");
-const User = require("../models/user-model");
-const jwt = require("jsonwebtoken");
+import asyncHandler from 'express-async-handler';
+// const Chat = require("../models/chat-model");
+import Chat from '../models/chat-model.js';
+// const Message = require("../models/message-model");
+import Message from '../models/message-model.js';
+// const User = require("../models/user-model");
+import User from '../models/user-model.js';
+// const jwt = require("jsonwebtoken");
+import Jwt from 'jsonwebtoken';
 
-const protect = asyncHandler(async (req, res, next) => {
+export const protect = asyncHandler(async (req, res, next) => {
   let token;
 
   if (
@@ -11,7 +17,8 @@ const protect = asyncHandler(async (req, res, next) => {
   ) {
     try {
       token = req.headers.authorization.split(" ")[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = Jwt
+        .verify(token, process.env.JWT_SECRET);
 
       req.user = await User.findById(decoded?.id).select("-password");
       next();
@@ -25,4 +32,4 @@ const protect = asyncHandler(async (req, res, next) => {
   }
 });
 
-module.exports = { protect };
+// export default protect;

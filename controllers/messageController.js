@@ -1,7 +1,11 @@
-const asyncHandler = require("express-async-handler");
-const Chat = require("../models/chat-model");
-const Message = require("../models/message-model");
-const User = require("../models/user-model");
+// const asyncHandler = require("express-async-handler");
+import asyncHandler from 'express-async-handler';
+// const Chat = require("../models/chat-model");
+import Chat from '../models/chat-model.js';
+// const Message = require("../models/message-model");
+import Message from '../models/message-model.js';
+// const User = require("../models/user-model");
+import User from '../models/user-model.js';
 
 const sendMessage = asyncHandler(async (req, res) => {
   const { chatId, content } = req.body;
@@ -55,4 +59,4 @@ const allMessages = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { sendMessage, allMessages };
+export { sendMessage, allMessages };
