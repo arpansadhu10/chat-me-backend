@@ -5,7 +5,7 @@ import TokenExpiredError from 'jsonwebtoken';
 import APIError from '../utils/APIError.js';
 
 // const isDevelopment = process.env.NODE_ENV === 'development';
-const isDevelopment = false;
+const isDevelopment = true;
 
 const errorHandler = (err, _req, res, next) => {
     // Check for JWT authentication error from passport
@@ -77,7 +77,7 @@ const errorHandler = (err, _req, res, next) => {
     //     code: 400,
     //     stack_trace: isDevelopment ? err?.stack : undefined,
     // });
-    if (err.name = "APIError") {
+    if (err.name == "APIError") {
         // } else if (err.substr(0, indexOf(" " - 1))) {
         console.error(err.message);
 
@@ -87,6 +87,16 @@ const errorHandler = (err, _req, res, next) => {
             stack_trace: isDevelopment ? err?.stack : undefined,
         })
     }
+    // if (err.name = "RangeError") {
+    //     // } else if (err.substr(0, indexOf(" " - 1))) {
+    //     console.error(400);
+
+    //     res.status(400).json({
+    //         message: err.message,
+    //         code: 400,
+    //         stack_trace: isDevelopment ? err?.stack : undefined,
+    //     })
+    // }
     else if (err) {
         console.error(err.message);
 
