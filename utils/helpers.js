@@ -24,3 +24,16 @@ export const comparePasswordHash = (password, hash = '') =>
             resolve(res);
         });
     });
+
+
+export const generateEmailVerifyUrl = (hash, email) => {
+    let url;
+    if (process.env.NODE_ENVIRONMENT === 'development') {
+        url = process.env.FRONTEND_URL_DEV + "/email/verify?" + String(hash) + "&" + String(email);
+
+    } else {
+        url = process.env.FRONTEND_URL_PROD + "/email/verify?" + String(hash) + "&" + String(email);
+    }
+    console.log(url);
+    return url;
+}

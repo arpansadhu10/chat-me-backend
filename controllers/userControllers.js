@@ -5,7 +5,8 @@ import User from '../models/user-model.js';
 import generateToken from "../config/generateToken.js";
 import APIError from '../utils/APIError.js';
 import httpStatus from 'http-status';
-import { comparePasswordHash, generateEmailVerificationToken, generateOTP, generatePasswordHash } from '../utils/helpers.js';
+import { comparePasswordHash, generateEmailVerificationToken, generateEmailVerifyUrl, generateOTP, generatePasswordHash } from '../utils/helpers.js';
+import EmailService from '../utils/emailService.js';
 
 // POST api/user
 const registerUser = asyncHandler(async (req, res) => {
@@ -71,6 +72,22 @@ const registerUser = asyncHandler(async (req, res) => {
       pic: pic || "somepic",
       emailVerificationHash: emailHashEncrypted
     });
+    const url = generateEmailVerifyUrl(emailHash, email);
+    //TODO:SEND MAIL
+
+    await EmailService.sendMail({
+      from: `ChatApp <${String(process.env.AWS_SES_EMAIL)}>`,
+      to: user.email,
+      text: 'Email Verification',
+      subject: 'Chatapp | Email Verification',
+      html: `<div>
+              <p>Hi ${user.name}.</p>
+              <p>This Email contains your link to verify email id</p>
+              <p>Please click here</p>
+              <a>${url}</a>
+            </div>`,
+    });
+
   } else if (contactNumber && !email) {
     user = await User.create({
       signInMethod: 'OTP',
@@ -121,10 +138,10 @@ const authUser = asyncHandler(async (req, res) => {
     throw new APIError("User not found", 404);
   }
   console.log(user);
-  if (!user.isVerified) {
-    throw new APIError("Server Error", 500);
+  // if (!user.isVerified) {
+  //   throw new APIError("User not verified", 400);
 
-  }
+  // }
   if (user.isVerified === false) {
 
     if (user.notVerifiedReason === "EMAIL") {
@@ -221,11 +238,14 @@ export const verifyEmail = async (req, res, next) => {
       throw new APIError("Invalid Request", 404);
 
     }
-    if ((comparePasswordHash(user.emailVerificationHash, String(hash)))) {
+    // console.log(await comparePasswordHash(user.emailVerificationHash, String(hash)));
+    console.log(user);
+    if (await comparePasswordHash(String(hash), String(user.emailVerificationHash))) {
+      console.log("here");
       user.emailVerificationHash = undefined;
       user.otpToken = undefined;
       user.isVerified = true;
-      await user.save();
+      // await user.save();
 
       res.status(201).json({
         _id: user._id,
