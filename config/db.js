@@ -9,7 +9,7 @@ export const connect = () => {
   const database_url = process.env.MONGO_URI;
   console.log(database_url);
   mongoose.connect(String(database_url), {
-    useNewUrlPArser: true,
+    useNewUrlParser: true,
     useUnifiedTopology: true
   }).then(() => {
     console.log("DB CONNECTED successfully");
