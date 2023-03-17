@@ -32,7 +32,7 @@ export const protect = asyncHandler(async (req, res, next) => {
           throw new APIError("User banned from platform. Please contact administrator", 401);
         }
         else {
-          throw new APIError("Please contact administrator", 401);
+          throw new APIError("Please Verify Email", 401);
         }
       }
 
