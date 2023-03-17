@@ -7,6 +7,7 @@ import APIError from '../utils/APIError.js';
 import httpStatus from 'http-status';
 import { comparePasswordHash, generateEmailVerificationToken, generateEmailVerifyUrl, generateOTP, generatePasswordHash } from '../utils/helpers.js';
 import EmailService from '../utils/emailService.js';
+import { forgotPasswordService, updatePasswordService } from '../services/userService.js';
 
 // POST api/user
 const registerUser = asyncHandler(async (req, res) => {
@@ -225,6 +226,30 @@ export const loginViaOtp = async (req, res, next) => {
   }
 }
 
+export const updatePassword = async (req, res, next) => {
+  try {
+    const user = req.user;
+    const password = req.body;
+    const updatePassword = await updatePasswordService(user._id, password);
+
+    res.status(201).json({ user: updatePassword, message: "password updated successfully" });
+  } catch (err) {
+    next(err);
+  }
+}
+
+
+export const forgotPasswordEmail = async (req, res, next) => {
+  try {
+    const email = req.body;
+    const updatePassword = await forgotPasswordService(email,);
+
+    res.status(201).json({ user: updatePassword, message: "reset link sent" });
+  } catch (err) {
+    next(err);
+  }
+}
+
 
 // POST api/user/verify-email
 export const verifyEmail = async (req, res, next) => {
@@ -342,5 +367,19 @@ const searchUser = asyncHandler(async (req, res) => {
   const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
   res.send(users);
 });
+
+
+export const verifyEmailHashForForgetPassword = async (req, res, next) => {
+  try {
+    const hash = req.params.hash;
+    const user = await User.verifyEmail(hash);
+    console.log(user);
+    res.status(201).json({
+      user
+    });
+  } catch (err) {
+    next(err);
+  }
+}
 
 export { registerUser, authUser, searchUser };

@@ -29,10 +29,22 @@ export const comparePasswordHash = (password, hash = '') =>
 export const generateEmailVerifyUrl = (hash, email) => {
     let url;
     if (process.env.NODE_ENVIRONMENT === 'development') {
-        url = process.env.FRONTEND_URL_DEV + "/email/verify?" + String(hash) + "&" + String(email);
+        url = process.env.FRONTEND_URL_DEV + "/email/verify?" + "hash=" + String(hash) + "&" + "email=" + String(email);
 
     } else {
-        url = process.env.FRONTEND_URL_PROD + "/email/verify?" + String(hash) + "&" + String(email);
+        url = process.env.FRONTEND_URL_PROD + "/email/verify?" + "hash=" + String(hash) + "&" + "email=" + String(email);
+    }
+    console.log(url);
+    return url;
+}
+
+export const generateRedirectionUrl = (emailHash) => {
+    let url;
+    if (process.env.NODE_ENVIRONMENT === 'development') {
+        url = process.env.FRONTEND_URL_DEV + "/email/forgot-password/" + String(emailHash);
+
+    } else {
+        url = process.env.FRONTEND_URL_PROD + "/email/forgot-password?" + String(emailHash);
     }
     console.log(url);
     return url;
