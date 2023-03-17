@@ -155,7 +155,7 @@ const authUser = asyncHandler(async (req, res) => {
       throw new APIError("User banned from platform. Please contact administrator", 401);
     }
     else {
-      throw new APIError("Please contact administrator", 401);
+      throw new APIError("Please Verify Email", 401);
     }
   }
   if (user && (await user.matchPassword(password))) {
