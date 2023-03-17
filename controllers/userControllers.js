@@ -27,7 +27,7 @@ const registerUser = asyncHandler(async (req, res) => {
     userExistsViaEmail = await User.aggregate([
       {
         '$match': {
-          'email': 'test@gmail.com'
+          'email': email
         }
       }
     ]);

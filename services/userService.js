@@ -1,7 +1,7 @@
-import generateToken from "../config/generateToken";
-import User from "../models/user-model"
-import APIError from "../utils/APIError";
-import { generateEmailVerificationToken, generateRedirectionUrl } from "../utils/helpers";
+import generateToken from "../config/generateToken.js";
+import User from "../models/user-model.js"
+import APIError from "../utils/APIError.js";
+import { generateEmailVerificationToken, generateRedirectionUrl } from "../utils/helpers.js";
 
 export const updatePasswordService = async (id, password) => {
     const user = await User.exists({ _id: id });
