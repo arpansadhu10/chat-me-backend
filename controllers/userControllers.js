@@ -270,7 +270,7 @@ export const verifyEmail = async (req, res, next) => {
       user.emailVerificationHash = undefined;
       user.otpToken = undefined;
       user.isVerified = true;
-      // await user.save();
+      await user.save();
 
       res.status(201).json({
         _id: user._id,
