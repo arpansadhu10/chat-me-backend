@@ -87,11 +87,11 @@ const searchUser = asyncHandler(async (req, res) => {
   const searchString = req.query.search;
   const keyword = searchString
     ? {
-        $or: [
-          { name: { $regex: searchString, $options: "i" } },
-          { email: { $regex: searchString, $options: "i" } }
-        ]
-      }
+      $or: [
+        { name: { $regex: searchString, $options: "i" } },
+        { email: { $regex: searchString, $options: "i" } }
+      ]
+    }
     : {};
 
   const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
@@ -99,11 +99,12 @@ const searchUser = asyncHandler(async (req, res) => {
 });
 
 // api/user?search=something
-const updateProfile = asyncHandler(async (req, res) => {
+const updateProfile = async (req, res, next) => {
   // const { image, name } = req.body;
   console.log("body", req.body);
   console.log("file", req.file);
   try {
+    let user;
     const name = req.body.name;
     if (name.length == 0) {
       res.status(401).send("Name too small");
@@ -123,30 +124,30 @@ const updateProfile = asyncHandler(async (req, res) => {
 
       const url = `https://${awsBucketname}.s3.${awsBucketRegion}.amazonaws.com/${imageName}`;
 
-      const user = await User.findByIdAndUpdate(
+      user = await User.findByIdAndUpdate(
         req.user._id,
         { name: name, pic: url },
         { new: true }
       );
-      res.send(user);
+
     } else {
-      const user = await User.findByIdAndUpdate(
+      user = await User.findByIdAndUpdate(
         req.user._id,
         { name: name },
         { new: true }
       );
-      res.send({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        password: user.password,
-        pic: user.pic,
-        token: generateToken(user._id)
-      });
     }
-  } catch (e) {
-    res.status(401).send(e);
+    res.send({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      pic: user.pic,
+      token: generateToken(user._id)
+    });
+  } catch (err) {
+    next(err)
+    // res.status(401).send(e);
   }
-});
+};
 
 export { registerUser, authUser, searchUser, updateProfile };
