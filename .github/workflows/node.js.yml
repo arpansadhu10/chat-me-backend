@@ -32,5 +32,10 @@ jobs:
         echo "PORT=${{ secrets.PORT }}" > .env
         echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
         echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+        echo "AWS_USER_BUCKET_NAME=${{ secrets.AWS_USER_BUCKET_NAME }}" >> .env
+        echo "AWS_USER_BUCKET_REGION=${{ secrets.AWS_USER_BUCKET_REGION }}" >> .env
+        echo "AWS_USER_BUCKET_ACCESS_KEY=${{ secrets.AWS_USER_BUCKET_ACCESS_KEY }}" >> .env
+        echo "AWS_USER_BUCKET_SECRET=${{ secrets.AWS_USER_BUCKET_SECRET }}" >> .env
+        
     - run: npm run build --if-present
     - run: npx pm2 restart server
