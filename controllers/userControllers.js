@@ -8,6 +8,7 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import httpStatus from "http-status";
 import "dotenv/config";
 import crypto from "crypto";
+import Chat from "../models/chat-model.js";
 
 const awsBucketname = process.env.AWS_USER_BUCKET_NAME;
 const awsBucketRegion = process.env.AWS_USER_BUCKET_REGION;
@@ -149,5 +150,32 @@ const updateProfile = async (req, res, next) => {
     // res.status(401).send(e);
   }
 };
+
+export const updateMutedChats = async (req, res, next) => {
+  try {
+    const userId = req.user._id;
+    const chatId = req.params.chatId;
+    const doesChatExists = await Chat.findById(chatId);
+    if (!doesChatExists) {
+      throw new APIError("Chat doesn't exists", 404);
+    }
+    const user = await User.findOneAndUpdate(userId,
+      {
+        $push: {
+          mutedChats: chatId,
+        },
+      },
+      { new: true }
+    ).select('-password');
+    if (!user) {
+      throw new APIError("User doesn't exists", 404);
+    }
+    res.status(200).json(user);
+
+  } catch (err) {
+    next(err);
+  }
+}
+
 
 export { registerUser, authUser, searchUser, updateProfile };

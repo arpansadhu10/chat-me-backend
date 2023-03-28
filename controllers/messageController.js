@@ -6,20 +6,29 @@ import Chat from '../models/chat-model.js';
 import Message from '../models/message-model.js';
 // const User = require("../models/user-model");
 import User from '../models/user-model.js';
+import APIError from '../utils/APIError.js';
 
-const sendMessage = asyncHandler(async (req, res) => {
-  const { chatId, content } = req.body;
-
-  if (!chatId || !content) {
-    return res.status(401).send("Invalid params provided");
-  }
-  let newMessage = {
-    content,
-    chat: chatId,
-    sender: req.user._id,
-  };
-
+const sendMessage = asyncHandler(async (req, res, next) => {
+  // console.log("here");
   try {
+    console.log(req.blocked);
+    if (req.blocked == true) {
+      console.log("userBlocked");
+      throw new APIError("user Blocked", 400);
+      // next();
+    }
+    const { chatId, content } = req.body;
+
+    if (!chatId || !content) {
+      return res.status(401).send("Invalid params provided");
+    }
+    let newMessage = {
+      content,
+      chat: chatId,
+      sender: req.user._id,
+    };
+
+
     let message = await Message.create(newMessage);
 
     message = await message.populate("sender", "name pic email");
@@ -36,8 +45,7 @@ const sendMessage = asyncHandler(async (req, res) => {
 
     res.json(message);
   } catch (err) {
-    res.status(401);
-    throw new Error(err.message);
+    next(err)
   }
 });
 

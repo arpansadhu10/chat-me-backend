@@ -7,6 +7,7 @@ import Message from '../models/message-model.js';
 import User from '../models/user-model.js';
 // const jwt = require("jsonwebtoken");
 import Jwt from 'jsonwebtoken';
+import APIError from '../utils/APIError.js';
 
 export const protect = asyncHandler(async (req, res, next) => {
   let token;
@@ -17,18 +18,17 @@ export const protect = asyncHandler(async (req, res, next) => {
   ) {
     try {
       token = req.headers.authorization.split(" ")[1];
+      console.log(token);
       const decoded = Jwt
         .verify(token, process.env.JWT_SECRET);
-
+      console.log(decoded, "decoded");
       req.user = await User.findById(decoded?.id).select("-password");
       next();
     } catch (error) {
-      res.status(401);
-      throw new Error("Not authorized, token mismatch");
+      throw new APIError("Not authorized, token mismatch", 401);
     }
   } else {
-    res.status(401);
-    throw new Error("Token not found");
+    throw new APIError("Token not found", 401);
   }
 });
 
