@@ -1,5 +1,6 @@
 // const mongoose = require("mongoose");
 import mongoose from "mongoose";
+import paginate from "mongoose-paginate-v2";
 
 const messageModel = mongoose.Schema(
   {
@@ -9,7 +10,7 @@ const messageModel = mongoose.Schema(
   },
   { timestamps: true }
 );
-
+messageModel.plugin(paginate);
 const Message = mongoose.model("Message", messageModel);
 
 export default Message;
