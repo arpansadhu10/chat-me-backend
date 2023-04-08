@@ -9,7 +9,9 @@ import { isBlocked } from '../middleware/checkBlockedMiddleware.js';
 
 const messageRouter = express.Router();
 
-messageRouter.post("/", protect, isBlocked, sendMessage)
+messageRouter.post("/", protect,
+  //  isBlocked,
+  sendMessage)
 messageRouter.get("/:chatId",
   protect,
   allMessages)

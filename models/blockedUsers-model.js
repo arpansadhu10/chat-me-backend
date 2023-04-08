@@ -1,6 +1,6 @@
 // const mongoose = require("mongoose");
 import mongoose from "mongoose";
-const blockedUserSchema = mongoose.Schema(
+const blockedChatSchema = mongoose.Schema(
     {
         user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
         blockedChats: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Chat', required: true }]
@@ -10,6 +10,6 @@ const blockedUserSchema = mongoose.Schema(
     }
 );
 
-const BlockedUsers = mongoose.model("blockedUsers", blockedUserSchema);
+const BlockedChats = mongoose.model("blockedChats", blockedChatSchema);
 
-export default BlockedUsers;
+export default BlockedChats;

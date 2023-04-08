@@ -8,6 +8,7 @@ import Message from '../models/message-model.js';
 import User from '../models/user-model.js';
 import APIError from '../utils/APIError.js';
 import mongoose from 'mongoose';
+import BlockedUsers from '../models/blockedUsers-model.js';
 
 const sendMessage = async (req, res, next) => {
   // console.log("here");
@@ -63,7 +64,6 @@ const allMessages = async (req, res, next) => {
     // const messages = await Message.find({ chat: chatId })
     //   .populate("sender", "name email pic")
     //   .populate("chat");
-
 
     const objectId = mongoose.Types.ObjectId(chatId);
     const pipeline = [
